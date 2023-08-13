@@ -9,6 +9,7 @@ const configFile = "dronewebservice.conf"
 type Config struct {
 	HTTPHost string
 	HTTPPort string
+	Dialect  string
 }
 
 func NewConfig() (*Config, error) {
@@ -22,6 +23,7 @@ func NewConfig() (*Config, error) {
 	c := &Config{
 		HTTPHost: viper.GetString("http.host"),
 		HTTPPort: viper.GetString("http.port"),
+		Dialect:  viper.GetString("http.implementation"),
 	}
 
 	return c, nil
