@@ -1,7 +1,9 @@
 #!/bin/bash
 DEBUG_IDENTIFICATOR="[ \033[32m DEBUG \033[0m ]"
-VERSION='cat VERSION'
-echo $VERSION
+VERSION=$(cat VERSION)
+
+echo -e "$DEBUG_IDENTIFICATOR Start docker building script for soft version - $VERSION"
+
 echo -e "$DEBUG_IDENTIFICATOR Reading parameters for script"
 
 while [ -n "$1" ]
@@ -23,15 +25,16 @@ esac
 shift
 done
 
-BUILD_PATH="build/droneclient/"
+BUILD_PATH="build/$TYPE/"
+IMAGE_NAME="$TYPE"
 
 echo -e "$DEBUG_IDENTIFICATOR Copying files for creating docker images"
 
-cp . $BUILD_PATH
+cp -r * $BUILD_PATH
 
 echo -e "$DEBUG_IDENTIFICATOR Building images"
 
-# docker build
+docker build -t $IMAGE_NAME:$VERSION ${BUILD_PATH}Dockerfile
 
 echo -e "$DEBUG_IDENTIFICATOR Cleaning workspace"
 

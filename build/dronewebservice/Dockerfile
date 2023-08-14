@@ -3,14 +3,14 @@
 ##
 FROM golang:1.16-buster AS build
 
-# WORKDIR /app
+WORKDIR /app
 
-# COPY go.mod ./
-# RUN go mod download
+COPY go.mod ./
+RUN go mod download
 
-# COPY . ./
+COPY . ./
 
-# RUN CGO_ENABLED=0 go build -o /metr ./cmd/server/main.go
+RUN go build ./cmd/dronewebservice/main.go
 
 # ##
 # ## Deploy
