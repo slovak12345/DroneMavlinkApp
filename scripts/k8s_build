@@ -1,0 +1,28 @@
+#!/bin/bash
+echo -e "$DEBUG_IDENTIFICATOR Start k8s building script for soft version - $VERSION"
+
+echo -e "$DEBUG_IDENTIFICATOR Preparing system parameters"
+
+DEBUG_IDENTIFICATOR="[ \033[32m DEBUG \033[0m ]"
+VERSION=$(cat VERSION)
+ROOT_PATH=$(git rev-parse --show-toplevel)
+SCRIPTS_PATH=${ROOT_PATH}/scripts
+
+echo -e "$DEBUG_IDENTIFICATOR Reading parameters for docker_build script"
+
+while [ -n "$1" ]
+do
+case "$1" in
+-client_examples_numbers) TYPE="$2" 
+echo "Found the -type option, with parameter value $TYPE" 
+shift ;;
+--) shift
+break ;;
+*) echo "$1 is not an option";;
+esac
+shift
+done
+
+${SCRIPTS_PATH}/scripdocker_build -type droneclient
+
+${SCRIPTS_PATH}/docker_build -type dronewebservice

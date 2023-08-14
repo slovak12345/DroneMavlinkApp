@@ -7,7 +7,7 @@ DEBUG_IDENTIFICATOR="[ \033[32m DEBUG \033[0m ]"
 VERSION=$(cat VERSION)
 ROOT_PATH=$(git rev-parse --show-toplevel)
 
-echo -e "$DEBUG_IDENTIFICATOR Reading parameters for script"
+echo -e "$DEBUG_IDENTIFICATOR Reading parameters for docker_build script"
 
 while [ -n "$1" ]
 do
