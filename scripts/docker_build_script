@@ -1,6 +1,8 @@
 #!/bin/bash
-
 DEBUG_IDENTIFICATOR="[ \033[32m DEBUG \033[0m ]"
+VERSION='cat VERSION'
+echo $VERSION
+echo -e "$DEBUG_IDENTIFICATOR Reading parameters for script"
 
 while [ -n "$1" ]
 do
@@ -25,8 +27,13 @@ BUILD_PATH="build/droneclient/"
 
 echo -e "$DEBUG_IDENTIFICATOR Copying files for creating docker images"
 
-cp go.mod $BUILD_PATH
+cp . $BUILD_PATH
+
+echo -e "$DEBUG_IDENTIFICATOR Building images"
+
+# docker build
 
 echo -e "$DEBUG_IDENTIFICATOR Cleaning workspace"
+
 git clean -f -x -d *
 

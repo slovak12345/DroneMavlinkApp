@@ -3,25 +3,25 @@
 ##
 FROM golang:1.16-buster AS build
 
-WORKDIR /app
+# WORKDIR /app
 
-COPY go.mod ./
-RUN go mod download
+# COPY go.mod ./
+# RUN go mod download
 
-COPY . ./
+# COPY . ./
 
-RUN CGO_ENABLED=0 go build -o /metr ./cmd/server/main.go
+# RUN CGO_ENABLED=0 go build -o /metr ./cmd/server/main.go
 
-##
-## Deploy
-##
-FROM scratch
+# ##
+# ## Deploy
+# ##
+# FROM scratch
 
-WORKDIR /
+# WORKDIR /
 
-COPY --from=build /metr /metr
-COPY --from=build /app/config/gometr.conf.yaml /config/gometr.conf.yaml
+# COPY --from=build /metr /metr
+# COPY --from=build /app/config/gometr.conf.yaml /config/gometr.conf.yaml
 
-EXPOSE 8000
+# EXPOSE 8000
 
-ENTRYPOINT ["/metr"]
+# ENTRYPOINT ["/metr"]
