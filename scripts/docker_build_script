@@ -1,0 +1,32 @@
+#!/bin/bash
+
+DEBUG_IDENTIFICATOR="[ \033[32m DEBUG \033[0m ]"
+
+while [ -n "$1" ]
+do
+case "$1" in
+-type) TYPE="$2" 
+echo "Found the -type option, with parameter value $TYPE" 
+shift ;;
+-examples_number) param="$EXAMPLES_NUMBER"
+echo "Found the -examples option, with parameter value $EXAMPLES_NUMBER" 
+shift ;;
+-start_port) param="$START_PORT"
+echo "Found the -examples option, with parameter value $START_PORT" 
+shift ;;
+--) shift
+break ;;
+*) echo "$1 is not an option";;
+esac
+shift
+done
+
+BUILD_PATH="build/droneclient/"
+
+echo -e "$DEBUG_IDENTIFICATOR Copying files for creating docker images"
+
+cp go.mod $BUILD_PATH
+
+echo -e "$DEBUG_IDENTIFICATOR Cleaning workspace"
+git clean -f -x -d *
+
