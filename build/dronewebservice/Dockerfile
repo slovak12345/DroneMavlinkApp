@@ -15,4 +15,8 @@ RUN go build ./cmd/dronewebservice/main.go
 
 # EXPOSE 8000
 
-ENTRYPOINT ["./cmd/dronewebservice/docker-entrypoint.sh"]
+COPY ./build/dronewebservice/docker-entrypoint.sh /
+
+RUN chmod +x /docker-entrypoint.sh
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
