@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: DroneDeployment
+metadata:
+  name: droneclient_deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: droneclient_deployment
+  template:
+    metadata:
+      labels:
+        app: droneclient_deployment
+    spec:
+      containers:
+      - name: droneclient_container
+        image: droneclient:0.0.1
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "0.5"

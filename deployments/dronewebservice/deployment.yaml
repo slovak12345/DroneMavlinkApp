@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: DroneDeployment
+metadata:
+  name: dronewebservice_deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dronewebservice_deployment
+  template:
+    metadata:
+      labels:
+        app: dronewebservice_deployment
+    spec:
+      containers:
+      - name: dronewebservice_container
+        image: dronewebservice:0.0.1
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "0.5"
