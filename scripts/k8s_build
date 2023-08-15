@@ -25,6 +25,6 @@ esac
 shift
 done
 
-${SCRIPTS_PATH}/scripdocker_build -type droneclient
+${SCRIPTS_PATH}/docker_build -type droneclient
 
 ${SCRIPTS_PATH}/docker_build -type dronewebservice
