@@ -9,6 +9,7 @@ echo -e "$DEBUG_IDENTIFICATOR Preparing system parameters"
 
 ROOT_PATH=$(git rev-parse --show-toplevel)
 SCRIPTS_PATH=${ROOT_PATH}/scripts
+DEPLOYMENT_PATH=${ROOT_PATH}/deployments
 
 echo -e "$DEBUG_IDENTIFICATOR Reading parameters for docker_build script"
 
@@ -28,3 +29,9 @@ done
 ${SCRIPTS_PATH}/docker_build -type droneclient
 
 ${SCRIPTS_PATH}/docker_build -type dronewebservice
+
+kubectl apply -f ${DEPLOYMENT_PATH}/dronewebservice/deployment.yaml
+
+kubectl apply -f ${DEPLOYMENT_PATH}/droneclient/deployment.yaml
+
+kubectl get deployments
