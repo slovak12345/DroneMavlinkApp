@@ -8,14 +8,15 @@ echo -e "$DEBUG_IDENTIFICATOR Start k8s data config generation script"
 echo -e "$DEBUG_IDENTIFICATOR Preparing system parameters"
 
 ROOT_PATH=$(git rev-parse --show-toplevel)
-KUBE_CONFIG_PATH=${ROOT_PATH}/scripts/kube
+KUBE_PATH=${ROOT_PATH}/scripts/kube
 SCRIPTS_PATH=${ROOT_PATH}/scripts
+KUBE_CONFIG_PATH=${ROOT_PATH}/config/kube
 
 cd $SCRIPTS_PATH
 
 mkdir kube
 
-cd $KUBE_CONFIG_PATH
+cd $KUBE_PATH
 
 echo -e "$DEBUG_IDENTIFICATOR Generate ssl-files"
 
@@ -31,6 +32,8 @@ openssl x509 -req -in client-csr.pem -signkey client-key.pem -out client-cert.pe
 # Convert the certificate and key to Base64-encoded data
 openssl base64 -in client-cert.pem -out client-cert-base64.txt
 openssl base64 -in client-key.pem -out client-key-base64.txt
+
+cp ${KUBE_CONFIG_PATH}/config $KUBE_PATH
 
 ls
 
