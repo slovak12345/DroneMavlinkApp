@@ -35,5 +35,5 @@ cd $ROOT_PATH
 
 git clean -f -x -d *
 
-echo -e "$DEBUG_IDENTIFICATOR Finish script"
+echo -e "$DEBUG_IDENTIFICATOR Finish building script"
 
