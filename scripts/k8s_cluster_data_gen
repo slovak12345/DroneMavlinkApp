@@ -20,18 +20,34 @@ cd $KUBE_PATH
 
 echo -e "$DEBUG_IDENTIFICATOR Generate ssl-files"
 
+# Generate a ca cert
+openssl genpkey -algorithm RSA -out ca-key.pem
+
+openssl req -x509 -new -nodes -key ca-key.pem -sha256 -days 365 -out ca-cert.pem -subj "/C=US/ST=California/L=San Francisco/O=My Organization/CN=client.example.com"
+
+for i in {1..5}
+do
 # Generate a private key
-openssl genpkey -algorithm RSA -out client-key.pem
+    mkdir $KUBE_PATH/$i
+    
+    cd $KUBE_PATH/$i
+    
+    openssl genpkey -algorithm RSA -out client-key.pem
 
-# Generate a certificate signing request (CSR)
-openssl req -new -key client-key.pem -out client-csr.pem -subj "/C=US/ST=California/L=San Francisco/O=My Organization/CN=client.example.com"
+    openssl req -new -key client-key.pem -out client-csr.pem -subj "/C=US/ST=California/L=San Francisco/O=My Organization/CN=client.example.com"
 
-# Self-sign the CSR to generate a client certificate
-openssl x509 -req -in client-csr.pem -signkey client-key.pem -out client-cert.pem
+    openssl x509 -req -in client-csr.pem -CA $KUBE_PATH/ca-cert.pem -CAkey $KUBE_PATH/ca-key.pem -CAcreateserial -out client-cert.pem
 
-# Convert the certificate and key to Base64-encoded data
-openssl base64 -in client-cert.pem -out client-cert-base64.txt
-openssl base64 -in client-key.pem -out client-key-base64.txt
+    echo "- name: user-number-$i" >> $KUBE_PATH/config
+
+    echo "  user:" >> $KUBE_PATH/config
+
+    echo "   client-certificate: $i/client-csr.pem" >> $KUBE_PATH/config
+
+    echo "   client-key: $i/client-key.pem" >> $KUBE_PATH/config
+done
+
+
 
 cp ${KUBE_CONFIG_PATH}/config $KUBE_PATH
 

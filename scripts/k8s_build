@@ -33,9 +33,9 @@ ${SCRIPTS_PATH}/docker_build -type droneclient
 
 ${SCRIPTS_PATH}/docker_build -type dronewebservice
 
-# kubectl apply -f ${DEPLOYMENT_PATH}/dronewebservice/deployment.yaml
+# kubectl apply -f ${DEPLOYMENT_PATH}/dronewebservice/deployment.yaml --kubeconfig scripts/kube/config
 
-# kubectl apply -f ${DEPLOYMENT_PATH}/droneclient/deployment.yaml
+# kubectl apply -f ${DEPLOYMENT_PATH}/droneclient/deployment.yaml --kubeconfig scripts/kube/config
 
 # kubectl get deployments
 
