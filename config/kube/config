@@ -12,3 +12,4 @@ contexts:
 current-context: dronewebservice-k8s-cluster
 kind: Config
 preferences: {}
+users:
