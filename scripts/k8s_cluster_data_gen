@@ -18,6 +18,8 @@ mkdir kube
 
 cd $KUBE_PATH
 
+cp ${KUBE_CONFIG_PATH}/config $KUBE_PATH
+
 echo -e "$DEBUG_IDENTIFICATOR Generate ssl-files"
 
 # Generate a ca cert
@@ -38,6 +40,8 @@ do
 
     openssl x509 -req -in client-csr.pem -CA $KUBE_PATH/ca-cert.pem -CAkey $KUBE_PATH/ca-key.pem -CAcreateserial -out client-cert.pem
 
+    ls $KUBE_PATH/config
+
     echo "- name: user-number-$i" >> $KUBE_PATH/config
 
     echo "  user:" >> $KUBE_PATH/config
@@ -45,13 +49,8 @@ do
     echo "   client-certificate: $i/client-csr.pem" >> $KUBE_PATH/config
 
     echo "   client-key: $i/client-key.pem" >> $KUBE_PATH/config
+
 done
-
-
-
-cp ${KUBE_CONFIG_PATH}/config $KUBE_PATH
-
-ls
 
 cd $ROOT_PATH
 
