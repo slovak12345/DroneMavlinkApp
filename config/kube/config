@@ -3,12 +3,12 @@ clusters:
 - cluster:
     certificate-authority: ca-cert.pem
     server: https://dronewebservice-k8s-cluster.com
-  name: development	
+  name: dronewebservice-k8s-cluster
 contexts:
 - context:
-   cluster: <cluster-name>
-   user: <culster-name-user>
-  name: <cluster-name>
-current-context: <cluster-name>
+   cluster: dronewebservice-k8s-cluster
+   user: user-number-1
+  name: dronewebservice-k8s-cluster
+current-context: dronewebservice-k8s-cluster
 kind: Config
 preferences: {}
