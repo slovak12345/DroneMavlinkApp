@@ -33,9 +33,33 @@ ${SCRIPTS_PATH}/docker_build -type droneclient
 
 ${SCRIPTS_PATH}/docker_build -type dronewebservice
 
-# kubectl apply -f ${DEPLOYMENT_PATH}/dronewebservice/deployment.yaml --kubeconfig scripts/kube/config
+echo -e "$DEBUG_IDENTIFICATOR Start cluster in minikube"
 
-# kubectl apply -f ${DEPLOYMENT_PATH}/droneclient/deployment.yaml --kubeconfig scripts/kube/config
+minikube start
+
+echo -e "$DEBUG_IDENTIFICATOR Create namespace dronewebservice in minikube"
+
+kubectl create namespace dronewebservice
+
+echo -e "$DEBUG_IDENTIFICATOR Get info about cluster"
+
+kubectl cluster-info
+
+echo -e "$DEBUG_IDENTIFICATOR Set namespace=dronewebservice in current context"
+
+kubectl config set-context --current --namespace=dronewebservice
+
+echo -e "$DEBUG_IDENTIFICATOR View config of cluster"
+
+kubectl config view
+
+echo -e "$DEBUG_IDENTIFICATOR Set IP adress of cluster in custom config"
+
+# kubectl get nodes -o json | jq '.items[0].status.addresses[0].address'
+
+echo -e "$DEBUG_IDENTIFICATOR Apply dronewebservice deployments"
+
+# kubectl apply -f ${DEPLOYMENT_PATH}/dronewebservice/deployment.yaml --kubeconfig scripts/kube/config
 
 # kubectl get deployments
 
