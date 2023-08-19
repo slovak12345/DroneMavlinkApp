@@ -61,6 +61,7 @@ echo -e "$DEBUG_IDENTIFICATOR Apply dronewebservice deployments"
 
 # kubectl apply -f ${DEPLOYMENT_PATH}/dronewebservice/deployment.yaml --kubeconfig scripts/kube/config
 
+
 # kubectl get deployments
 
 echo -e "$DEBUG_IDENTIFICATOR Build kubernetes images"
