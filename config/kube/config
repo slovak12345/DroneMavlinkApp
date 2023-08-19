@@ -1,8 +1,8 @@
 apiVersion: v1
 clusters:
 - cluster:
-    certificate-authority: ca-cert.pem
-    server: https://dronewebservice-k8s-cluster.com
+    certificate-authority: cert.pem
+    server: https://192.168.49.2:8443
   name: dronewebservice-k8s-cluster
 contexts:
 - context:

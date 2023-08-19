@@ -23,11 +23,15 @@ cp ${KUBE_CONFIG_PATH}/config $KUBE_PATH
 echo -e "$DEBUG_IDENTIFICATOR Generate ssl-files"
 
 # Generate a ca cert
-openssl genpkey -algorithm RSA -out ca-key.pem
+#openssl genpkey -algorithm RSA -out ca-key.pem
 
-openssl req -x509 -new -nodes -key ca-key.pem -sha256 -days 365 -out ca-cert.pem -subj "/C=US/ST=California/L=San Francisco/O=My Organization/CN=client.example.com"
+#openssl req -x509 -new -nodes -key ca-key.pem -sha256 -days 365 -out ca-cert.pem -subj "/C=US/ST=California/L=San Francisco/O=My Organization/CN=client.example.com"
 
-for i in {1..5}
+cp ~/.minikube/ca.crt ca.crt
+cp ~/.minikube/ca.key ca.key
+
+
+for i in 1
 do
 # Generate a private key
     mkdir $KUBE_PATH/$i
@@ -38,13 +42,13 @@ do
 
     openssl req -new -key client-key.pem -out client-csr.pem -subj "/C=US/ST=California/L=San Francisco/O=My Organization/CN=client.example.com"
 
-    openssl x509 -req -in client-csr.pem -CA $KUBE_PATH/ca-cert.pem -CAkey $KUBE_PATH/ca-key.pem -CAcreateserial -out client-cert.pem
+    openssl x509 -req -in client-csr.pem -CA $KUBE_PATH/ca.crt -CAkey $KUBE_PATH/ca.key -CAcreateserial -out client-cert.pem
 
     echo "- name: user-number-$i" >> $KUBE_PATH/config
 
     echo "  user:" >> $KUBE_PATH/config
 
-    echo "   client-certificate: $i/client-csr.pem" >> $KUBE_PATH/config
+    echo "   client-certificate: $i/client-cert.pem" >> $KUBE_PATH/config
 
     echo "   client-key: $i/client-key.pem" >> $KUBE_PATH/config
 

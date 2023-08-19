@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: DroneDeployment
+kind: Deployment
 metadata:
   name: dronewebservice_deployment
 spec:
