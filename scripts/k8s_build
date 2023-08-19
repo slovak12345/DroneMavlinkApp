@@ -26,13 +26,6 @@ esac
 shift
 done
 
-echo -e "$DEBUG_IDENTIFICATOR Build docker images"
-
-
-${SCRIPTS_PATH}/docker_build -type droneclient
-
-${SCRIPTS_PATH}/docker_build -type dronewebservice
-
 echo -e "$DEBUG_IDENTIFICATOR Start cluster in minikube"
 
 minikube start
@@ -48,6 +41,14 @@ kubectl cluster-info
 echo -e "$DEBUG_IDENTIFICATOR Set namespace=dronewebservice in current context"
 
 kubectl config set-context --current --namespace=dronewebservice
+
+echo -e "$DEBUG_IDENTIFICATOR Build docker images"
+
+eval $(minikube docker-env)
+
+${SCRIPTS_PATH}/docker_build -type droneclient
+
+${SCRIPTS_PATH}/docker_build -type dronewebservice
 
 echo -e "$DEBUG_IDENTIFICATOR View config of cluster"
 

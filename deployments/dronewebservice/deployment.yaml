@@ -17,9 +17,6 @@ spec:
       containers:
       - name: dronewebservice-container
         image: dronewebservice:0.0.1
-        resources:
-          limits:
-            memory: "512Mi"
-            cpu: "0.5"
+        imagePullPolicy: Never
         ports:
-            - containerPort: 8101
+        - containerPort: 8101
