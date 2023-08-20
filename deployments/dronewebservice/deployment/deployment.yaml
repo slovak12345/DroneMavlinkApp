@@ -33,7 +33,7 @@ spec:
     # selector that matches the pod
     app: dronewebservice-deployment
   # type of service
-  type: LoadBalancer
+  type: LoadBalancer     
   ports:
   - protocol: TCP 
     # port for exposing the service        
