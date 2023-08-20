@@ -60,17 +60,27 @@ echo -e "$DEBUG_IDENTIFICATOR Set IP adress of cluster in custom config"
 
 echo -e "$DEBUG_IDENTIFICATOR Apply dronewebservice deployments"
 
-kubectl apply -f ${DEPLOYMENT_PATH}/dronewebservice/deployment.yaml
+kubectl apply -f ${DEPLOYMENT_PATH}/dronewebservice/deployment/deployment.yaml
 
 echo -e "$DEBUG_IDENTIFICATOR Current deployments"
 
 kubectl get deployments
 
+echo -e "$DEBUG_IDENTIFICATOR Apply dronewebservice services"
+
+kubectl apply -f ${DEPLOYMENT_PATH}/dronewebservice/service/service.yaml
+
+echo -e "$DEBUG_IDENTIFICATOR Current services"
+
+kubectl get services
+
 echo -e "$DEBUG_IDENTIFICATOR Delete kubernetes deployments"
 
-kubectl delete -f deployments/dronewebservice/deployment.yaml
-
 kubectl delete -n default deployment dronewebservice-deployment
+
+echo -e "$DEBUG_IDENTIFICATOR Delete kubernetes services"
+
+kubectl delete -n default service dronewebservice-src
 
 echo -e "$DEBUG_IDENTIFICATOR Minikube stop"
 
