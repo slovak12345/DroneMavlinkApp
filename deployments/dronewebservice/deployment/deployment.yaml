@@ -20,25 +20,3 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 8101
----
-# First, add the Service API
-apiVersion: v1
-# This will be the Service setup
-kind: Service
-metadata:
-  # Your service name
-  name: dronewebservice-src
-spec:
-  selector:
-    # selector that matches the pod
-    app: dronewebservice-deployment
-  # type of service
-  type: LoadBalancer     
-  ports:
-  - protocol: TCP 
-    # port for exposing the service        
-    port: 5000
-    # portfor exposing the pod             
-    targetPort: 8101
-    # port for exposing the node       
-    nodePort: 31110
