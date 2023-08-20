@@ -19,4 +19,4 @@ spec:
         image: dronewebservice:0.0.1
         imagePullPolicy: Never
         ports:
-        - containerPort: 8101
+        - containerPort: 8000
