@@ -74,6 +74,10 @@ echo -e "$DEBUG_IDENTIFICATOR Current services"
 
 kubectl get services
 
+echo -e "$DEBUG_IDENTIFICATOR Started containers"
+
+kubectl get pods -o json | jq '.items[].metadata.name'
+
 echo -e "$DEBUG_IDENTIFICATOR Delete kubernetes deployments"
 
 kubectl delete -n default deployment dronewebservice-deployment
