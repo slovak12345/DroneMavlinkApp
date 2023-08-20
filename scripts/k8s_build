@@ -70,6 +70,8 @@ echo -e "$DEBUG_IDENTIFICATOR Delete kubernetes deployments"
 
 kubectl delete -f deployments/dronewebservice/deployment.yaml
 
+kubectl delete -n default deployment dronewebservice-deployment
+
 echo -e "$DEBUG_IDENTIFICATOR Minikube stop"
 
 minikube stop
