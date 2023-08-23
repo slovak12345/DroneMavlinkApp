@@ -6,41 +6,32 @@ VERSION=$(cat VERSION)
 echo -e "$DEBUG_IDENTIFICATOR Start iptables setup script for soft version - $VERSION"
 
 echo -e "$DEBUG_IDENTIFICATOR Reading parameters for iptables_setup script"
-
-while [ -n "$1" ]
-do
-case "$1" in
--drones) DRONES_NUM="$2" 
-echo "Found the -drones option, with parameter value $TYPE" 
-shift ;;
--baseport) BASE_PORT="$2" 
-echo "Found the -baseport option, with parameter value $TYPE" 
-shift ;;
--controlport) CONTROL_PORT="$2" 
-echo "Found the -controlport option, with parameter value $TYPE" 
-shift ;;
---) shift
-break ;;
-*) echo "$1 is not an option";;
-esac
-shift
-done
+ROOT_PATH=$(git rev-parse --show-toplevel)
+CONTROL_PORT=$(cat $ROOT_PATH/config/dronewebservice.conf.yaml | yq '.http.port')
+DRONES_NUM=$(cat config/dronewebservice.conf.yaml | yq '.drones | length')
 
 echo -e "$DEBUG_IDENTIFICATOR Setup iptables for control panel"
 
-sudo iptables -t filter -A INPUT -p udp --dport $CONTROL_PORT -j ACCEPT
-sudo iptables -t filter -A OUTPUT -p udp --dport $CONTROL_PORT -j ACCEPT
+# sudo iptables -t filter -A INPUT -p tcp --dport $CONTROL_PORT -j ACCEPT
+# sudo iptables -t filter -A OUTPUT -p tcp --dport $CONTROL_PORT -j ACCEPT
 
 echo -e "$DEBUG_IDENTIFICATOR Setup iptables for drones"
 
-for (( i=$BASE_PORT; i <= $BASE_PORT + $DRONES_NUM; i++ ))
+for (( j=0; j < $DRONES_NUM; j++ ))
 do
-sudo iptables -t filter -A INPUT -p udp --dport $i -j ACCEPT
-sudo iptables -t filter -A OUTPUT -p udp --dport $i -j ACCEPT
+    BASE_PORT=$(cat $ROOT_PATH/config/dronewebservice.conf.yaml | myenv="$j" yq '.drones[env(myenv)].drone.baseport')
+    PORT_NUMBERS=$(cat $ROOT_PATH/config/dronewebservice.conf.yaml | myenv="$j" yq '.drones[env(myenv)].drone.numberOfPorts')
+    PORT_TYPE=$(cat $ROOT_PATH/config/dronewebservice.conf.yaml | myenv="$j" yq '.drones[env(myenv)].drone.type')
+    echo $BASE_PORT
+    # for (( i=$BASE_PORT; i <= $BASE_PORT + $PORT_NUMBERS; i++ ))
+    # do
+    # sudo iptables -t filter -A INPUT -p $PORT_TYPE --dport $i -j ACCEPT
+    # sudo iptables -t filter -A OUTPUT -p $PORT_TYPE --dport $i -j ACCEPT
+    # done
 done
 
 echo -e "$DEBUG_IDENTIFICATOR Show iptables rules"
 
-sudo iptables -L
+# sudo iptables -L
 
 echo -e "$DEBUG_IDENTIFICATOR End iptables setup"

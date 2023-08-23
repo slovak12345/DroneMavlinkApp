@@ -2,3 +2,12 @@ http:
   host: 0.0.0.0
   port: 8180
   implementation: PX4
+drones:
+  - drone:
+      baseport: 10000
+      numberOfPorts: 100
+      type: udp
+  - drone:
+      baseport: 10100
+      numberOfPorts: 100
+      type: udp
