@@ -54,10 +54,6 @@ echo -e "$DEBUG_IDENTIFICATOR View config of cluster"
 
 kubectl config view
 
-echo -e "$DEBUG_IDENTIFICATOR Set IP adress of cluster in custom config"
-
-CLUSTER_IP=$(kubectl get service dronewebservice-src -o jsonpath="{.spec.clusterIP}")
-
 echo -e "$DEBUG_IDENTIFICATOR Open ports in firewall"
 
 sudo iptables -t filter -A INPUT -p tcp --dport 8180 -j ACCEPT
@@ -82,6 +78,16 @@ kubectl get services
 echo -e "$DEBUG_IDENTIFICATOR Started containers"
 
 kubectl get pods -o json | jq '.items[].metadata.name'
+
+echo -e "$DEBUG_IDENTIFICATOR Get IPs of MINIKUBE, CLUSTER and NODE_PORT"
+
+MINIKUBE_IP=$(minikube ip)
+CLUSTER_IP=$(kubectl get service dronewebservice-src -o jsonpath="{.spec.clusterIP}")
+NODE_PORT=$(kubectl get service dronewebservice-src -o jsonpath="{.spec.ports[0].nodePort}")
+
+echo -e "$DEBUG_IDENTIFICATOR Test curl request for start_page"
+
+curl http://$MINIKUBE_IP:$NODE_PORT/
 
 echo -e "$DEBUG_IDENTIFICATOR Delete kubernetes deployments"
 

@@ -6,7 +6,7 @@ spec:
   selector:
     app: dronewebservice-deployment
   ports:     
-    - port: 8080             
-      targetPort: 8080
+    - port: 9000             
+      targetPort: 8180
   # type: LoadBalancer
   type: NodePort
