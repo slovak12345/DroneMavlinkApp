@@ -1,0 +1,46 @@
+#!/bin/bash
+
+DEBUG_IDENTIFICATOR="[ \033[32m DEBUG \033[0m ]"
+VERSION=$(cat VERSION)
+
+echo -e "$DEBUG_IDENTIFICATOR Start iptables setup script for soft version - $VERSION"
+
+echo -e "$DEBUG_IDENTIFICATOR Reading parameters for iptables_setup script"
+
+while [ -n "$1" ]
+do
+case "$1" in
+-drones) DRONES_NUM="$2" 
+echo "Found the -drones option, with parameter value $TYPE" 
+shift ;;
+-baseport) BASE_PORT="$2" 
+echo "Found the -baseport option, with parameter value $TYPE" 
+shift ;;
+-controlport) CONTROL_PORT="$2" 
+echo "Found the -controlport option, with parameter value $TYPE" 
+shift ;;
+--) shift
+break ;;
+*) echo "$1 is not an option";;
+esac
+shift
+done
+
+echo -e "$DEBUG_IDENTIFICATOR Setup iptables for control panel"
+
+sudo iptables -t filter -A INPUT -p udp --dport $CONTROL_PORT -j ACCEPT
+sudo iptables -t filter -A OUTPUT -p udp --dport $CONTROL_PORT -j ACCEPT
+
+echo -e "$DEBUG_IDENTIFICATOR Setup iptables for drones"
+
+for (( i=$BASE_PORT; i <= $BASE_PORT + $DRONES_NUM; i++ ))
+do
+sudo iptables -t filter -A INPUT -p udp --dport $i -j ACCEPT
+sudo iptables -t filter -A OUTPUT -p udp --dport $i -j ACCEPT
+done
+
+echo -e "$DEBUG_IDENTIFICATOR Show iptables rules"
+
+sudo iptables -L
+
+echo -e "$DEBUG_IDENTIFICATOR End iptables setup"
