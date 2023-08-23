@@ -56,7 +56,12 @@ kubectl config view
 
 echo -e "$DEBUG_IDENTIFICATOR Set IP adress of cluster in custom config"
 
-# kubectl get nodes -o json | jq '.items[0].status.addresses[0].address'
+CLUSTER_IP=$(kubectl get service dronewebservice-src -o jsonpath="{.spec.clusterIP}")
+
+echo -e "$DEBUG_IDENTIFICATOR Open ports in firewall"
+
+sudo iptables -t filter -A INPUT -p tcp --dport 8180 -j ACCEPT
+sudo iptables -t filter -A OUTPUT -p tcp --dport 8180 -j ACCEPT
 
 echo -e "$DEBUG_IDENTIFICATOR Apply dronewebservice deployments"
 
