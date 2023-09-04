@@ -12,26 +12,26 @@ DRONES_NUM=$(cat config/dronewebservice.conf.yaml | yq '.drones | length')
 
 echo -e "$DEBUG_IDENTIFICATOR Setup iptables for control panel"
 
-# sudo iptables -t filter -A INPUT -p tcp --dport $CONTROL_PORT -j ACCEPT
-# sudo iptables -t filter -A OUTPUT -p tcp --dport $CONTROL_PORT -j ACCEPT
+sudo iptables -t filter -A INPUT -p tcp --dport $CONTROL_PORT -j ACCEPT
+sudo iptables -t filter -A OUTPUT -p tcp --dport $CONTROL_PORT -j ACCEPT
 
 echo -e "$DEBUG_IDENTIFICATOR Setup iptables for drones"
 
+BASE_PORT=($(yq '.drones[].drone.baseport' $ROOT_PATH/config/dronewebservice.conf.yaml))
+PORT_NUMBERS=($(yq '.drones[].drone.numberOfPorts' $ROOT_PATH/config/dronewebservice.conf.yaml))
+PORT_TYPE=($(yq '.drones[].drone.type' $ROOT_PATH/config/dronewebservice.conf.yaml))
+
 for (( j=0; j < $DRONES_NUM; j++ ))
 do
-    BASE_PORT=$(cat $ROOT_PATH/config/dronewebservice.conf.yaml | myenv="$j" yq '.drones[env(myenv)].drone.baseport')
-    PORT_NUMBERS=$(cat $ROOT_PATH/config/dronewebservice.conf.yaml | myenv="$j" yq '.drones[env(myenv)].drone.numberOfPorts')
-    PORT_TYPE=$(cat $ROOT_PATH/config/dronewebservice.conf.yaml | myenv="$j" yq '.drones[env(myenv)].drone.type')
-    echo $BASE_PORT
-    # for (( i=$BASE_PORT; i <= $BASE_PORT + $PORT_NUMBERS; i++ ))
-    # do
-    # sudo iptables -t filter -A INPUT -p $PORT_TYPE --dport $i -j ACCEPT
-    # sudo iptables -t filter -A OUTPUT -p $PORT_TYPE --dport $i -j ACCEPT
-    # done
+    for (( i=${BASE_PORT[$j]}; i <= ${BASE_PORT[$j]} + ${PORT_NUMBERS[$j]}; i++ ))
+    do
+    sudo iptables -t filter -A INPUT -p ${PORT_TYPE[$j]} --dport $i -j ACCEPT
+    sudo iptables -t filter -A OUTPUT -p ${PORT_TYPE[$j]} --dport $i -j ACCEPT
+    done
 done
 
 echo -e "$DEBUG_IDENTIFICATOR Show iptables rules"
 
-# sudo iptables -L
+sudo iptables -L
 
 echo -e "$DEBUG_IDENTIFICATOR End iptables setup"
