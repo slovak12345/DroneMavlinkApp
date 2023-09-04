@@ -25,8 +25,10 @@ for (( j=0; j < $DRONES_NUM; j++ ))
 do
     for (( i=${BASE_PORT[$j]}; i <= ${BASE_PORT[$j]} + ${PORT_NUMBERS[$j]}; i++ ))
     do
-    sudo iptables -t filter -A INPUT -p ${PORT_TYPE[$j]} --dport $i -j ACCEPT
-    sudo iptables -t filter -A OUTPUT -p ${PORT_TYPE[$j]} --dport $i -j ACCEPT
+    type=$(echo ${PORT_TYPE[$j]} | tr -d '"')
+    # echo $type
+    sudo iptables -t filter -A INPUT -p $type --dport $i -j ACCEPT
+    sudo iptables -t filter -A OUTPUT -p $type --dport $i -j ACCEPT
     done
 done
 
