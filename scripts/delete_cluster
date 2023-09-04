@@ -1,0 +1,20 @@
+#!/bin/bash
+
+DEBUG_IDENTIFICATOR="[ \033[32m DEBUG \033[0m ]"
+VERSION=$(cat VERSION)
+
+echo -e "$DEBUG_IDENTIFICATOR Start clean script for soft version - $VERSION"
+
+echo -e "$DEBUG_IDENTIFICATOR Delete kubernetes deployments"
+
+kubectl delete -n default deployment dronewebservice-deployment
+
+echo -e "$DEBUG_IDENTIFICATOR Delete kubernetes services"
+
+kubectl delete -n default service dronewebservice-src
+
+echo -e "$DEBUG_IDENTIFICATOR Minikube stop"
+
+minikube stop
+
+echo -e "$DEBUG_IDENTIFICATOR End clean building script"

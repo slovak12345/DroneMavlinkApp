@@ -88,16 +88,4 @@ echo -e "$DEBUG_IDENTIFICATOR Test curl request for start_page"
 
 curl http://$MINIKUBE_IP:$NODE_PORT/
 
-echo -e "$DEBUG_IDENTIFICATOR Delete kubernetes deployments"
-
-kubectl delete -n default deployment dronewebservice-deployment
-
-echo -e "$DEBUG_IDENTIFICATOR Delete kubernetes services"
-
-kubectl delete -n default service dronewebservice-src
-
-echo -e "$DEBUG_IDENTIFICATOR Minikube stop"
-
-minikube stop
-
 echo -e "$DEBUG_IDENTIFICATOR End k8s building script"
